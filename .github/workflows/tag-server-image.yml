@@ -1,0 +1,48 @@
+name: Tag existing Server image
+
+on:
+  push:
+    branches: [homelab]
+    paths: [.github/workflows/tag-server-image.yml]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version tag for the existing image
+        required: true
+        default: 2.1.0
+      source:
+        description: Existing immutable image tag to copy
+        required: true
+        default: sha-5836f788cd4814550af7aeffc745c6eb9f49fc82
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: tag-server-image
+  cancel-in-progress: false
+
+jobs:
+  tag:
+    if: github.repository == 'EricWvi/Agents-Anywhere' && github.ref == 'refs/heads/homelab'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      IMAGE: ghcr.io/ericwvi/agents-anywhere-server
+      VERSION: ${{ inputs.version || '2.1.0' }}
+      SOURCE: ${{ inputs.source || 'sha-5836f788cd4814550af7aeffc745c6eb9f49fc82' }}
+    steps:
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tag existing manifest without rebuilding
+        shell: bash
+        run: |
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+          [[ "$SOURCE" =~ ^sha-[0-9a-f]{40}$ ]] || exit 1
+          docker buildx imagetools create --prefer-index=false \
+            --tag "$IMAGE:$VERSION" "$IMAGE:$SOURCE"
