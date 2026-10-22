@@ -1,0 +1,51 @@
+name: Publish Server image
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [homelab]
+    paths:
+      - server/**
+      - web-next/**
+      - docker/Dockerfile
+      - .dockerignore
+      - .github/workflows/server-image.yml
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: server-image-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    if: github.repository == 'EricWvi/Agents-Anywhere' && github.ref == 'refs/heads/homelab'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: docker/setup-buildx-action@v3
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and publish Server with static Web
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          target: server
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ghcr.io/ericwvi/agents-anywhere-server:homelab
+            ghcr.io/ericwvi/agents-anywhere-server:sha-${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/EricWvi/Agents-Anywhere
+            org.opencontainers.image.revision=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
