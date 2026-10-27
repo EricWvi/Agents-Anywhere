@@ -26,6 +26,10 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
+      - name: Resolve short commit tag
+        id: revision
+        shell: bash
+        run: echo "short=${GITHUB_SHA:0:8}" >> "$GITHUB_OUTPUT"
       - uses: docker/setup-buildx-action@v3
       - name: Log in to GHCR
         uses: docker/login-action@v3
@@ -42,6 +46,7 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
+            ghcr.io/ericwvi/agents-anywhere-server:${{ steps.revision.outputs.short }}
             ghcr.io/ericwvi/agents-anywhere-server:homelab
             ghcr.io/ericwvi/agents-anywhere-server:sha-${{ github.sha }}
           labels: |
