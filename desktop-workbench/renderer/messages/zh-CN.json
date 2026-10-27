@@ -12,7 +12,15 @@
     "preparing": "正在准备本机 Connector 运行环境，正在下载依赖，可能需要几分钟…",
     "quit": "退出桌面端",
     "recheck": "重新检查",
-    "checking": "正在检查…"
+    "checking": "正在检查…",
+    "provisioningTitle": "Connector 运行环境准备失败",
+    "provisioningDescription": "下载 Python 或依赖时失败，通常是网络或镜像的问题。可以换一个镜像后重试；如果之前下载到一半，可以清空依赖缓存，重新完整下载。",
+    "pypiMirrorHint": "优先从这里下载，镜像缺少的包会改从官方 PyPI 下载。",
+    "resetEnvironment": "清空缓存并重试",
+    "retry": "重试",
+    "backendStoppedTitle": "桌面端后台服务已停止",
+    "backendStoppedDescription": "本机 Connector、设备和设置都依赖这个服务。点击“重新启动”恢复；如果反复出现，请附上下面的错误信息和日志反馈问题。",
+    "restartBackend": "重新启动"
   },
   "app": {
     "name": "Agents Anywhere"
@@ -343,6 +351,9 @@
       "clear": "清除筛选"
     },
     "new": {
+      "restoredTargetUnavailable": "原设备或 Runtime 当前不可用，请重新选择后再发送。",
+      "restoredDraft": "已恢复未创建的任务草稿",
+      "discardDraft": "放弃草稿",
       "askApproval": "请求确认",
       "attach": "添加附件",
       "attachmentLimit": "最多 {count} 个文件",
@@ -360,6 +371,10 @@
       "model": "模型",
       "modelAndReasoning": "模型和推理强度",
       "permissionMode": "权限模式",
+      "permissionUnsynced": "权限未同步",
+      "modelUnsynced": "模型未同步",
+      "runtimeDefault": "Runtime 默认值",
+      "nextTurn": "下一轮生效",
       "permissionModes": {
         "dsh": {
           "readOnly": {
@@ -427,6 +442,9 @@
       "sendTask": "发送任务",
       "agent": "Agent",
       "createFailed": "无法创建会话。",
+      "selectModel": "请选择模型",
+      "modelCatalogUnavailable": "模型目录尚未就绪",
+      "recoveryConfigurationRequired": "草稿和附件已保留。请重新确认模型、权限及 Runtime 配置中的 Agent 模式后再发送。",
       "attachmentOnlyPrompt": "（无文字内容。）",
       "imagePreview": {
         "close": "关闭",
@@ -881,6 +899,14 @@
       "waitingForScan": "等待手机扫码"
     },
     "session": {
+      "creationFailed": "任务尚未创建",
+      "creationUnconfirmed": "创建结果未确认",
+      "checkCreatedSession": "查看已分配会话",
+      "creationCheckFirst": "请先核对设备会话列表，避免重复创建。草稿仍保留在当前应用中。",
+      "creationDraftRetained": "输入内容和附件已保留；准备就绪后请手动重试。",
+      "retryCreation": "重试创建",
+      "editCreation": "返回编辑",
+      "checkDeviceSessions": "查看设备会话",
       "device": "设备",
       "status": "状态",
       "sessionId": "会话 ID",
@@ -1538,7 +1564,7 @@
       "desktopPythonChosenByUv": "由 uv 自动选择（需要时首次运行会下载）",
       "desktopUvPypiIndexUrl": "uv PyPI 镜像",
       "desktopUvPypiIndexUrlPlaceholder": "留空以使用默认 PyPI",
-      "desktopUvPypiIndexUrlDescription": "uv 安装或同步 Python 包时使用。",
+      "desktopUvPypiIndexUrlDescription": "uv 安装或同步 Python 包时优先使用，镜像缺少的包会改从官方 PyPI 下载。",
       "desktopPypiDefault": "默认",
       "desktopPypiTsinghua": "清华",
       "desktopPypiUstc": "中科大",
